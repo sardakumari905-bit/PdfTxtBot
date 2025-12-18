@@ -1,22 +1,21 @@
-FROM python:3.10-slim-buster
+FROM python:3.10-slim
 
-# सिस्टम के ज़रूरी टूल्स इंस्टॉल करें
-RUN apt-get update && apt-get install -y \
+# अपडेट करने और जरूरी फाइल्स डालने का नया तरीका
+RUN apt-get update -qq && apt-get install -y --no-install-recommends \
     build-essential \
-    libffi-dev \
-    libssl-dev \
     python3-dev \
     gcc \
-    && rm -rf /var/lib/apt/lists/*
+    &>/dev/null && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Requirements इंस्टॉल करें
+# पहले केवल requirements इंस्टॉल करें (कैश के लिए बेहतर है)
 COPY requirements.txt .
+RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-# बाकी कोड कॉपी करें
+# अब सारा कोड कॉपी करें
 COPY . .
 
-# बॉट शुरू करने की कमांड
+# मुख्य फाइल को चलाने की कमांड (चेक करें कि आपके कोड में main.py है या bot.py)
 CMD ["python3", "main.py"]
