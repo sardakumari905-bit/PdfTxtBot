@@ -9,7 +9,7 @@ def gettoken():
 
 gettoken()
 if TOKEN == None:
-    token = input("Please enter the TOKEN\nGenerated from Botfather : ")
+    token = input("8561137105:AAEsY4BeR8cxeAbIZE-36eKv6j8Um42cKg0")
     with open("config.env", "w") as f:
         f.write(f"TOK={token}")
     gettoken()
